@@ -77,6 +77,7 @@ If Authenticated it will allow us to proceed and interact with this API.
 | ------------- | ------------- |
 | + easy to setup  | - applies to all controllers  |
 | + automatically applies to any new code | - applies to all function / requests  |
+| + works with minimal APIs or controller based ones ||
 
 
 2. As a Service Filter
@@ -86,6 +87,7 @@ example
 | Pros  | Cons |
 | ------------- | ------------- |
 | + fine control  | - have to apply to any new code  |
+|                 | - does NOT work with minimal APIs |
 
 
 3. As a Attribute and Service Filter
@@ -96,3 +98,4 @@ example
 | ------------- | ------------- |
 | + fine control  | - have to apply to any new code  |
 | + ease of use in code  | - harder to unit test / moq  |
+|                 | - does NOT work with minimal APIs |
