@@ -101,3 +101,10 @@ example
 | + fine control  | - have to apply to any new code  |
 | + ease of use in code  | - harder to unit test / moq  |
 |                 | - does NOT work with minimal APIs |
+
+
+4. Enpoint Filters (for minimal APIs)
+
+example
+
++ made for minimal APIs
