@@ -17,9 +17,59 @@ Using an API Key that is set in the project which allows another request to it u
 
 example
 
-```C# "program.cs"
+add into `program.cs`
+```C#
 app.UseMiddleware<ApiKeyAuthMiddleware>();
 ```
+
+new class `ApiKeyAuthMiddleware`
+```C#
+namespace ApiKeyAuth.Authentication;
+
+public class ApiKeyAuthMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly IConfiguration _configuration;
+
+    public ApiKeyAuthMiddleware(RequestDelegate next, IConfiguration configuration)
+    {
+        _next = next;
+        _configuration = configuration;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        // Check the header for a vaild api key
+        if (!context.Request.Headers.TryGetValue(AuthConstants.ApiHeaderName, out var extractedApiKey))
+        {
+            context.Response.StatusCode = 401;
+            await context.Response.WriteAsync("API Key is missing");
+            return;
+        }
+
+        // the key we expect to see
+        var apikey = _configuration.GetValue<string>(AuthConstants.ApiKeySectionName);
+
+        // check if the one sent matches the one we expected
+        if (!apikey.Equals(extractedApiKey))
+        {
+            context.Response.StatusCode = 401;
+            await context.Response.WriteAsync("API Key is invalid");
+            return;
+        }
+
+        await _next(context);
+    }
+}
+```
+
+Now any request sent will either send an error message like...
+
+
+
+Or it will allow us to proceed and interact with this API like..
+
+
 
 | Pros  | Cons |
 | ------------- | ------------- |
