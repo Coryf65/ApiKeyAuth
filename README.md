@@ -5,6 +5,8 @@ Using an API Key that is set in the project which allows another request to it u
 
 > NOTE: The key is just used as an example of implementation. It is a `GUID` stored in the `appsettings.json` for **demo purposes only**.
 
+- What are [Filters](https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-7.0)?
+
 ## Request example
 
 `https://localhost:7203/weather` with a header of `x-api-key = 83565FE196334682A1A08665129E7B1D`
@@ -104,6 +106,8 @@ example
 
 
 4. Enpoint Filters (for minimal APIs)
+
+more info on [Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/min-api-filters?view=aspnetcore-7.0)
 
 example
 
