@@ -66,9 +66,11 @@ public class ApiKeyAuthMiddleware
 Now any request sent will either send an error message like...
 
 - `missing api key`
+
 ![missing-api-key](https://user-images.githubusercontent.com/20805058/225133555-c795c126-5188-41ab-87cd-b22b52822534.png)
 
 - `invalid api key`
+
 ![invalid-api-key](https://user-images.githubusercontent.com/20805058/225133525-296b8807-ac38-4f59-828c-aa59de96c758.png)
 
 If Authenticated it will allow us to proceed and interact with this API.
