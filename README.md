@@ -88,6 +88,14 @@ If Authenticated it will allow us to proceed and interact with this API.
 
 example
 
+add the following into `program.cs`
+```C#
+- builder.Services.AddControllers();
++ builder.Services.AddControllers(filter => filter.Filters.Add<ApiKeyAuthFilter>());
+
+builder.Services.AddScoped<ApiKeyAuthFilter>();
+```
+
 | Pros  | Cons |
 | ------------- | ------------- |
 | + fine control  | - have to apply to any new code  |
@@ -102,7 +110,7 @@ example
 | ------------- | ------------- |
 | + fine control  | - have to apply to any new code  |
 | + ease of use in code  | - harder to unit test / moq  |
-|                 | - does NOT work with minimal APIs |
+| | - does NOT work with minimal APIs |
 
 
 4. Enpoint Filters (for minimal APIs)
@@ -111,4 +119,29 @@ more info on [Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/fun
 
 example
 
-+ made for minimal APIs
+added into `program.cs` at the end of whatever endpoint we want.
+```C#
+// Minimal API example and how to use filters with this type
+app.MapGet("weathermin", () =>
+{
+    string[] Summaries = new[]
+    {
+      "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    };
+
+    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+    {        
+        Date = DateTime.Now.AddDays(index),
+        TemperatureC = Random.Shared.Next(-20, 55),
+        Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+    }).ToArray();
+
+    // EndpointFilter #4, Adding our filter to this method
+}).AddEndpointFilter<ApiKeyEndpointFilter>();
+```
+
+And the classes that make it work in `ApiKeyEndpointFilter` and `UnauthorizedHttpObjectResult.cs` which allows us to return a message from unathorized which is not built in.
+
+| Pros  | Cons |
+| ------------- | ------------- |
+| + made for minimal APIs  | - Only works in .NET 7  |
