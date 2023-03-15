@@ -89,11 +89,11 @@ If Authenticated it will allow us to proceed and interact with this API.
 example
 
 add the following into `program.cs`
-```C#
-- builder.Services.AddControllers();
-+ builder.Services.AddControllers(filter => filter.Filters.Add<ApiKeyAuthFilter>());
+```diff
+-builder.Services.AddControllers();
++builder.Services.AddControllers(filter => filter.Filters.Add<ApiKeyAuthFilter>());
 
-builder.Services.AddScoped<ApiKeyAuthFilter>();
++builder.Services.AddScoped<ApiKeyAuthFilter>();
 ```
 
 | Pros  | Cons |
