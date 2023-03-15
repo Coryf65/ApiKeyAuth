@@ -53,6 +53,8 @@ app.MapGet("weathermin", () =>
         TemperatureC = Random.Shared.Next(-20, 55),
         Summary = Summaries[Random.Shared.Next(Summaries.Length)]
     }).ToArray();
-});
+
+    // EndpointFilter #4, Adding our filter to this method
+}).AddEndpointFilter<ApiKeyEndpointFilter>();
 
 app.Run();
