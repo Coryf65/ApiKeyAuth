@@ -1,5 +1,6 @@
 using ApiKeyAuth;
 using ApiKeyAuth.Authentication;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,33 @@ builder.Services.AddControllers(filter => filter.Filters.Add<ApiKeyAuthFilter>()
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+// Add the ApiKey authentication into Swagger
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("ApiKey", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Description = "The API Key to access the API",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Name = "x-api-key",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Scheme = "ApiKeyScheme"
+    });
+    var scheme = new OpenApiSecurityScheme
+    {
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = "ApiKey"
+        },
+        In = ParameterLocation.Header
+    };
+    var requirement = new OpenApiSecurityRequirement
+    {
+        { scheme, new List<string>() }
+    };
+    c.AddSecurityRequirement(requirement);
+});
 
 // Filter version #2, register the filter, turn on per controller at each one
 builder.Services.AddScoped<ApiKeyAuthFilter>();
@@ -39,6 +66,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// #4 endpoint filter, use as a group or by method
 var group = app.MapGroup("weather").AddEndpointFilter<ApiKeyEndpointFilter>();
 
 // Minimal API example and how to use filters with this type
